@@ -1,73 +1,128 @@
-import { useState} from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 
+const inputStyle = {
+  width: '100%',
+  padding: '12px 16px',
+  background: 'var(--bg-deep)',
+  border: '1px solid var(--border-subtle)',
+  borderRadius: '5px',
+  color: 'var(--text-primary)',
+  fontFamily: 'var(--font-body)',
+  fontSize: '16px',
+  marginTop: '8px',
+  outline: 'none',
+  transition: 'border-color 0.2s',
+};
+
+const labelStyle = {
+  display: 'block',
+  fontFamily: 'var(--font-mono)',
+  fontSize: '11px',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  color: 'var(--gold-dim)',
+};
 
 const CreateBooks = () => {
-  const[title, setTitle] = useState('');
-  const[author, setAuthor] = useState('');
-  const[publishYear, setPublishYear] = useState('');
-  const[loading, setLoading] = useState(false);
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [publishYear, setPublishYear] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const handleSaveBook = () =>{
-    const data = {
-      title,
-      author,
-      publishYear,
-    };
+
+  const handleSaveBook = () => {
+    const data = { title, author, publishYear };
     setLoading(true);
-    axios
-    .post('http://localhost:5555/books', data)
-    .then(() =>{
-      setLoading(false);
-      navigate('/')
-    })
-    .catch((error)=>{
-    setLoading(false);
-    alert('Un error sucedio. Por favor revisa la consola')
-    console.log(error);
-    });
+    axios.post('http://localhost:5555/books', data)
+      .then(() => { setLoading(false); navigate('/'); })
+      .catch(error => { setLoading(false); alert('Error. Revisa la consola.'); console.log(error); });
   };
 
   return (
-    <div className='p-4'>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-deep)', padding: '2.5rem' }}>
       <BackButton />
-      <h1 className='text-3xl my-4'>Crear Libro</h1>
-      {loading ? <Spinner /> : ''}
-      <div className='flex flex-col border-2 border-sky-400 rounded-xl w-150 p-4 mx-auto'>
-        <div className='my-4'>
-          <label className='text-xl mr-4 text-gray-500'>Titulo</label>
-          <input
-          type='text'
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className='border-2 border-gray-500 px-4 py-2 w-full'
-          />
-        </div>
-        <div className='my-4'>
-          <label className='text-xl mr-4 text-gray-500'>Autor</label>
-          <input
-          type='text'
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          className='border-2 border-gray-500 px-4 py-2 w-full'
-          />
-        </div><div className='my-4'>
-          <label className='text-xl mr-4 text-gray-500'>Anio de Publicacion</label>
-          <input
-          type='number'
-          value={publishYear}
-          onChange={(e) => setPublishYear(e.target.value)}
-          className='border-2 border-gray-500 px-4 py-2 w-full'
-          />
-        </div>
-        <button className='p-2 bg-sky-300 m-8'onClick={handleSaveBook}>
-          Guardar
-        </button>
+
+      <div style={{ maxWidth: '560px', margin: '2.5rem auto 0' }}>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--gold-dim)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '10px' }}>Catálogo</p>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '34px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '2rem', letterSpacing: '-0.01em' }}>Nuevo Libro</h1>
+
+        {loading ? <Spinner /> : (
+          <div style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '10px',
+            padding: '2rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.5rem',
+          }}>
+            <div>
+              <label style={labelStyle}>Título</label>
+              <input
+                type='text'
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                style={inputStyle}
+                onFocus={e => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={e => e.target.style.borderColor = 'var(--border-subtle)'}
+                placeholder="Título del libro"
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Autor</label>
+              <input
+                type='text'
+                value={author}
+                onChange={e => setAuthor(e.target.value)}
+                style={inputStyle}
+                onFocus={e => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={e => e.target.style.borderColor = 'var(--border-subtle)'}
+                placeholder="Nombre del autor"
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Año de publicación</label>
+              <input
+                type='number'
+                value={publishYear}
+                onChange={e => setPublishYear(e.target.value)}
+                style={inputStyle}
+                onFocus={e => e.target.style.borderColor = 'var(--gold)'}
+                onBlur={e => e.target.style.borderColor = 'var(--border-subtle)'}
+                placeholder="Ej: 2024"
+              />
+            </div>
+            <button
+              onClick={handleSaveBook}
+              style={{
+                marginTop: '0.5rem',
+                padding: '13px',
+                background: 'var(--gold)',
+                color: 'var(--bg-deep)',
+                border: 'none',
+                borderRadius: '5px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '13px',
+                fontWeight: '500',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--gold-light)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'var(--gold)'}
+            >
+              Guardar libro
+            </button>
+          </div>
+        )}
       </div>
     </div>
-  )
-}
-export default CreateBooks
+  );
+};
+
+export default CreateBooks;

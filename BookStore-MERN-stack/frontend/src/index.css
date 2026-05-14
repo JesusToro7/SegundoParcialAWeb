@@ -1,1 +1,43 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-dim: #8A6D2F;
+  --bg-deep: #0E0C0A;
+  --bg-surface: #161410;
+  --bg-card: #1C1916;
+  --bg-card-hover: #222018;
+  --border-subtle: rgba(201,168,76,0.15);
+  --border-mid: rgba(201,168,76,0.3);
+  --text-primary: #F0EAD6;
+  --text-secondary: #A89878;
+  --text-muted: #5C5040;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Crimson Pro', Georgia, serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  min-height: 100vh;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+/* Selection */
+::selection { background: var(--gold-dim); color: var(--bg-deep); }
+
+/* Global link reset */
+a { color: inherit; text-decoration: none; }

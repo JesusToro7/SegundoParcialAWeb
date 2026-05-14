@@ -1,11 +1,19 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import BackButton from "../components/BackButton";
 import Spinner from "../components/Spinner";
 
+const fieldStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+  padding: '1rem 0',
+  borderBottom: '1px solid var(--border-subtle)',
+};
+
 const ShowBook = () => {
-  const [book, setBook] = useState({}); 
+  const [book, setBook] = useState({});
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
@@ -21,44 +29,53 @@ const ShowBook = () => {
         setLoading(false);
       }
     };
-    
     fetchBook();
-  }, [id]); 
-  
+  }, [id]);
+
   return (
-    <div className='p-4'>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-deep)', padding: '2.5rem' }}>
       <BackButton />
-      <h1 className='text-3xl my-4'>Mostrar Libro</h1> {/* ← Corregí "text-3x1" a "text-3xl" */}
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div className='flex flex-col border-2 border-sky-400 rounded-xl w-fit p-4'>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Id</span>
-            <span>{book._id}</span>
+
+      <div style={{ maxWidth: '600px', margin: '2.5rem auto 0' }}>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--gold-dim)', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '10px' }}>Detalle</p>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '34px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '2rem', letterSpacing: '-0.01em' }}>Información del Libro</h1>
+
+        {loading ? <Spinner /> : (
+          <div style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '10px',
+            padding: '1.5rem 2rem',
+          }}>
+            {[
+              { label: 'ID', value: book._id, mono: true },
+              { label: 'Título', value: book.title, display: true },
+              { label: 'Autor', value: book.author, italic: true },
+              { label: 'Año de Publicación', value: book.publishYear, mono: true },
+              { label: 'Fecha de Creación', value: book.createdAt ? new Date(book.createdAt).toLocaleString('es-CO') : 'N/A', mono: true },
+              { label: 'Última Actualización', value: book.updatedAt ? new Date(book.updatedAt).toLocaleString('es-CO') : 'N/A', mono: true },
+            ].map(({ label, value, mono, display, italic }) => (
+              <div key={label} style={fieldStyle}>
+                <span style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '10px',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: 'var(--gold-dim)',
+                }}>{label}</span>
+                <span style={{
+                  fontFamily: display ? 'var(--font-display)' : mono ? 'var(--font-mono)' : 'var(--font-body)',
+                  fontSize: display ? '20px' : mono ? '13px' : '16px',
+                  fontWeight: display ? '600' : 'normal',
+                  fontStyle: italic ? 'italic' : 'normal',
+                  color: display ? 'var(--text-primary)' : mono ? 'var(--text-secondary)' : 'var(--text-secondary)',
+                  wordBreak: 'break-all',
+                }}>{value}</span>
+              </div>
+            ))}
           </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Titulo</span>
-            <span>{book.title}</span>
-          </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Autor</span>
-            <span>{book.author}</span> {/* ← CORRECCIÓN IMPORTANTE: Cambié "book.Author" a "book.author" */}
-          </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Año de Publicación</span>
-            <span>{book.publishYear}</span>
-          </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Fecha de Creación</span>
-            <span>{book.createdAt ? new Date(book.createdAt).toString() : 'N/A'}</span> {/* ← Corregí .toString() */}
-          </div>
-          <div className='my-4'>
-            <span className='text-xl mr-4 text-gray-500'>Última Actualización</span>
-            <span>{book.updatedAt ? new Date(book.updatedAt).toString() : 'N/A'}</span> {/* ← Corregí .toString() */}
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

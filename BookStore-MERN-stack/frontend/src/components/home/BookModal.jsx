@@ -5,37 +5,111 @@ import { BiUserCircle } from 'react-icons/bi';
 const BookModal = ({ book, onClose }) => {
   return (
     <div
-      className='fixed bg-black bg-opacity-60 top-0 left-0 right-0 bottom-0 z-50 flex justify-center items-center'
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0,0,0,0.75)',
+        backdropFilter: 'blur(4px)',
+        zIndex: 50,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '1rem',
+      }}
       onClick={onClose}
     >
       <div
-        onClick={(event) => event.stopPropagation()}
-        className='w-150 max-w-full h-100 bg-white rounded-xl p-4 flex flex-col relative'
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-mid)',
+          borderRadius: '10px',
+          padding: '2rem',
+          maxWidth: '480px',
+          width: '100%',
+          position: 'relative',
+          animation: 'fadeUp 0.2s ease',
+        }}
       >
-        <AiOutlineClose
-          className='absolute right-6 top-6 text-3xl text-red-600 cursor-pointer'
+        <style>{`@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+
+        <button
           onClick={onClose}
-        />
-        <h2 className='w-fit px-4 py-1 bg-red-300 rounded-lg'>
-          {book.publishYear}
-        </h2>
-        <h4 className='my-2 text-gray-500'>{book._id}</h4>
-        <div className='flex justify-start items-center gap-x-2'>
-          <PiBookOpenTextLight className='text-red-300 text-2xl' />
-          <h2 className='my-1'>{book.title}</h2>
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            right: '1rem',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            color: 'var(--text-muted)',
+            fontSize: '20px',
+            lineHeight: 1,
+            transition: 'color 0.15s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--text-muted)'}
+        >
+          <AiOutlineClose />
+        </button>
+
+        {/* Year */}
+        <span style={{
+          display: 'inline-block',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          color: 'var(--gold)',
+          background: 'rgba(201,168,76,0.1)',
+          border: '1px solid rgba(201,168,76,0.2)',
+          borderRadius: '3px',
+          padding: '4px 12px',
+          letterSpacing: '0.06em',
+          marginBottom: '1rem',
+        }}>{book.publishYear}</span>
+
+        {/* ID */}
+        <p style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: '10px',
+          color: 'var(--text-muted)',
+          marginBottom: '1.2rem',
+          letterSpacing: '0.04em',
+        }}>{book._id}</p>
+
+        {/* Title */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '10px' }}>
+          <PiBookOpenTextLight style={{ color: 'var(--gold)', fontSize: '22px', marginTop: '3px', flexShrink: 0 }} />
+          <h2 style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '22px',
+            fontWeight: '700',
+            color: 'var(--text-primary)',
+            lineHeight: '1.25',
+          }}>{book.title}</h2>
         </div>
-        <div className='flex justify-start items-center gap-x-2'>
-          <BiUserCircle className='text-red-300 text-2xl' />
-          <h2 className='my-1'>{book.author}</h2>
+
+        {/* Author */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
+          <BiUserCircle style={{ color: 'var(--gold-dim)', fontSize: '20px', flexShrink: 0 }} />
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '16px',
+            fontStyle: 'italic',
+            color: 'var(--text-secondary)',
+          }}>{book.author}</p>
         </div>
-        <p className='mt-4'>Muchas Gracias</p>
-        <p className='my-2'>
-          ¡Gracias por tomarte el tiempo de ver nuestro libro!
-          Esperamos que haya sido de gran interés y aporte para ti.
-          Te invitamos también a explorar nuestra biblioteca digital,
-          donde encontrarás más libros, recursos y contenido pensado 
-          para seguir aprendiendo, creciendo e inspirándote.
-          ¡Siempre habrá una nueva lectura esperándote!
+
+        <div style={{ height: '1px', background: 'var(--border-subtle)', marginBottom: '1.2rem' }} />
+
+        <p style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: '15px',
+          color: 'var(--text-muted)',
+          lineHeight: '1.7',
+          fontStyle: 'italic',
+        }}>
+          ¡Gracias por tomarte el tiempo de explorar nuestra colección!
+          Te invitamos a descubrir más títulos en nuestra biblioteca.
         </p>
       </div>
     </div>
