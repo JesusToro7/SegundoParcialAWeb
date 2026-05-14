@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import { Book } from "./models/bookModel.js";
@@ -9,32 +9,27 @@ const app = express();
 
 app.use(express.json());
 
-//CORS POLICY
+// CORS POLICY
 app.use(cors());
 
-//app.use(
-    //cors({
-      //  origin:'http://localhost:3000',
-        //methods:['GET','POST','PUT','DELETE'],
- //       allowedHeaders:['Content-Type'],
-   // }
-    //));
-
 app.get('/', (request, response) => {
-    console.log(request)
-    return response.status(234).send('Welcome to MERN Stack Tutorial')
+    console.log(request);
+    return response.status(234).send('Welcome to MERN Stack Tutorial');
 });
 
 app.use('/books', booksRoutes);
 
 mongoose
    .connect(mongoDBURL)
-   .then(() =>{
-    console.log('App connect to database');
-    app.listen(PORT, () => {
-    console.log(`App is listening to port: ${PORT}`);
-});
+   .then(() => {
+        console.log('App connected to database');
+        // 🔥 IMPORTANTE: Agregar '0.0.0.0' para Render
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`App is listening on port: ${PORT}`);
+            console.log(`Server running on http://0.0.0.0:${PORT}`);
+        });
    })
-   .catch((error) =>{
-    console.error();
+   .catch((error) => {
+        console.error('Database connection error:', error);
+        process.exit(1); // Salir con error si no puede conectar a la DB
    });
